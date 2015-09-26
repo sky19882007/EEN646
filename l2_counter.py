@@ -4,7 +4,7 @@
 
 import time
 from time import sleep
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 # setup GPIO function and GPIO pin
 
