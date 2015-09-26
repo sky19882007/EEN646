@@ -41,6 +41,7 @@ def config():
 def doCount():
     global counter
     counter = counter + 1
+    print "now counter is {0}".format(counter)
     if counter == 16:
         counter = 0
     sleep(1)
@@ -60,6 +61,8 @@ def doDisplay():
 
 
 def startCounting():
+    GPIO.output(GPIO_OUT_STATUS, 1)
+    print ' ***startCounting*** '
     global cntFlg
     cntFlg = True
     while cntFlg:
@@ -68,6 +71,7 @@ def startCounting():
 
 
 def endCounting():
+    GPIO.output(GPIO_OUT_STATUS, 0)
     global cntFlg
     cntFlg = False
     doDisplay()
@@ -84,5 +88,5 @@ if __name__ == '__main__':
             counter = 0
         if startStop and cntFlg:
             endCounting()
-        else:
+        else startStop and not cnfFlg:
             startCounting()
