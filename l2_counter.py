@@ -83,10 +83,17 @@ if __name__ == '__main__':
     while True:
         startStop = GPIO.input(GPIO_IN_STARTSTOP)
         reset = GPIO.input(GPIO_IN_RESET)
+        print startStop
+        print reset
+        print cntFlg
         if not reset:
+            print "reseting"
             endCounting()
             counter = 0
         if startStop and cntFlg:
+            print "end"
             endCounting()
-        elif startStop and not cnfFlg:
+        elif startStop and not cntFlg:
+            print "start"
             startCounting()
+
