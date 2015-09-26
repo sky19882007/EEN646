@@ -62,12 +62,12 @@ def doDisplay():
 
 def startCounting():
     GPIO.output(GPIO_OUT_STATUS, 1)
-    print ' ***startCounting*** '
-    global cntFlg
-    cntFlg = True
-    while cntFlg:
-        doCount()
-        doDisplay()
+    # print ' ***startCounting*** '
+    # global cntFlg
+    # cntFlg = True
+    # while cntFlg:
+    doCount()
+    doDisplay()
 
 
 def endCounting():
@@ -80,6 +80,8 @@ if __name__ == '__main__':
 
     # doCount()
     config()
+    startStop = 0
+    reset = 1
     while True:
         startStop = GPIO.input(GPIO_IN_STARTSTOP)
         reset = GPIO.input(GPIO_IN_RESET)
@@ -95,5 +97,7 @@ if __name__ == '__main__':
             endCounting()
         elif startStop and not cntFlg:
             print "start"
-            startCounting()
+            cntFlg = True
+        elif cntFlg:
+            counting()
 
