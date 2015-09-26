@@ -88,5 +88,5 @@ if __name__ == '__main__':
             counter = 0
         if startStop and cntFlg:
             endCounting()
-        else startStop and not cnfFlg:
+        elif startStop and not cnfFlg:
             startCounting()
