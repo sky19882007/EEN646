@@ -39,6 +39,7 @@ def config():
 
 
 def doCount():
+    global counter
     counter = counter + 1
     if counter == 16:
         counter = 0
@@ -47,17 +48,19 @@ def doCount():
 
 def doDisplay():
                 # display count
+    global counter
     d0 = counter & 8
     d1 = counter & 4
     d2 = counter & 2
     d3 = counter & 1
-    GPIO.output(25, d0)
-    GPIO.output(24, d1)
-    GPIO.output(23, d2)
-    GPIO.output(18, d3)
+    GPIO.output(GPIO_OUT_0, d0)
+    GPIO.output(GPIO_OUT_1, d1)
+    GPIO.output(GPIO_OUT_2, d2)
+    GPIO.output(GPIO_OUT_3, d3)
 
 
 def startCounting():
+    global cntFlg
     cntFlg = True
     while cntFlg:
         doCount()
@@ -65,14 +68,18 @@ def startCounting():
 
 
 def endCounting():
+    global cntFlg
     cntFlg = False
+    doDisplay()
 
 if __name__ == '__main__':
+
+    # doCount()
     config()
     while True:
         startStop = GPIO.input(GPIO_IN_STARTSTOP)
         reset = GPIO.input(GPIO_IN_RESET)
-        if reset:
+        if not reset:
             endCounting()
             counter = 0
         if startStop and cntFlg:
