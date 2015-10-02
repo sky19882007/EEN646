@@ -1,4 +1,4 @@
-# Lab 2 writen by Xu
+# Lab 2 
 
 import time
 from time import sleep
@@ -14,7 +14,7 @@ def setup():
     # status LED, output signal shows startstop status
     GPIO.setup(4, GPIO.OUT)
 
-    # input signal, startstop bottom and reset bottom
+    # input signal, startstop button and reset button
     GPIO.setup(17, GPIO.IN)
     GPIO.setup(22, GPIO.IN)
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     while True:
         startStop = GPIO.input(17)
         reset = GPIO.input(22)
-        # when startstop bottom is pressed system will begin counting.
+        # when startstop button is pressed system will begin counting.
         if(startStop == True):
             GPIO.output(4, 1)
             count()
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         # when startstop is not pressed the system will stay stop, the status LED will keep off.
         else:
             GPIO.output(4, 0)
-            # when reset bottom is pressed n will be reset to be 0 and GPIO will be clean up.
+            # when reset button is pressed n will be reset to be 0 and GPIO will be clean up.
             if(reset == True):
                 n = 0
             # display count
