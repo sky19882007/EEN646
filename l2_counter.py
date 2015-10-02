@@ -59,6 +59,13 @@ def doDisplay():
     GPIO.output(GPIO_OUT_2, d2)
     GPIO.output(GPIO_OUT_3, d3)
 
+def doreset():
+    global counter
+    counter=0
+    GPIO.output(GPIO_OUT_0, 0)
+    GPIO.output(GPIO_OUT_1, 0)
+    GPIO.output(GPIO_OUT_2, 0)
+    GPIO.output(GPIO_OUT_3, 0)
 
 def counting():
     GPIO.output(GPIO_OUT_STATUS, 1)
@@ -91,7 +98,7 @@ if __name__ == '__main__':
         if not reset:
             print "********* reseting ********"
             endCounting()
-            counter = 0
+            doreset()
             sleep(2)
         if startStop and cntFlg:
             print "********** end counting ********"
