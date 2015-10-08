@@ -156,13 +156,14 @@ class Traffic(object):
                 G.changBLight((0, 0, 1))
 
     def processReq(self, other):
-        # can do request only the color is red
+        # color is red and time < 6 ,the request will be executed.
         if self.cclor == 0 and self.ctime < 6:
             print "change current light ctime to 6, other light to yellow"
             self.ctime = 6
             other.__changeToColor(1)
             # other.ctime = 2
             G.isRequest = True
+            #TODO other conditions
         else:
             print "{0}'s request is not responsed, check color and ctime".format(self.lname)
 
