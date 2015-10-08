@@ -191,4 +191,4 @@ if __name__ == '__main__':
         a.checkStatus()
         b.checkStatus()
 
-        print "\n"
+        print
