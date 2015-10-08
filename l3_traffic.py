@@ -3,7 +3,7 @@
 
 import time
 from time import sleep
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 
 class G(object):
@@ -16,46 +16,71 @@ class G(object):
         # self.arg = arg
 
     @staticmethod
+    def config():
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+
+    # input signal, startstop bottom and reset bottom
+        GPIO.setup(G.abutton, GPIO.IN)
+        GPIO.setup(G.bbutton, GPIO.IN)
+
+    # 4 data LEDs, output signal
+        GPIO.setup(G.portsA[0], GPIO.OUT)
+        GPIO.setup(G.portsA[1], GPIO.OUT)
+        GPIO.setup(G.portsA[2], GPIO.OUT)
+        GPIO.setup(G.portsB[0], GPIO.OUT)
+        GPIO.setup(G.portsB[1], GPIO.OUT)
+        GPIO.setup(G.portsB[2], GPIO.OUT)
+
+    @staticmethod
     def tick(a, b):
         sleep(1)
         a.ctime = a.ctime + 1
         b.ctime = b.ctime + 1
 
+   # TODO modify these parameters to suit the hardware 
+    abutton = 22
+    bbutton = 17
+    portsA = (10,9,11)
+    portsB = (2,3,4)
+
     @staticmethod
     def getARequest():
-        # todo just for test, get a interrupt
-        # value = GPIO.input(GPIO_IN_STARTSTOP)
-        value = raw_input("intrupt A?")
+        # just for test, get a interrupt
+        value = GPIO.input(G.abutton)
+        #value = raw_input("intrupt A?")
+        print "button a value is {0}".format(value)
         if value:
             print "***** A is requested *****"
         return G.__chargeValue(value)
 
     @staticmethod
     def getBRequest():
-        # todo just for test, get a interrupt
-        # value = GPIO.input(GPIO_IN_STARTSTOP)
-        value = raw_input("intrupt B?")
+        # just for test, get a interrupt
+        value = GPIO.input(G.bbutton)
+        #value = raw_input("intrupt B?")
+        print "button b value is {0}".format(value)
         if value:
             print "***** B is requested *****"
         return G.__chargeValue(value)
 
     @staticmethod
     def changALight(arr):
-        # todo input A ports here
-        print "changALight, arr is {0}".format(arr)
-        aports = (1, 2, 3)
-        # GPIO.output(aports[0], arr[0])
-        # GPIO.output(aports[1], arr[1])
-        # GPIO.output(aports[2], arr[2])
+        # input A ports here
+        aports = G.portsA 
+        print "changALight {1}, arr is {0}".format(arr, aports)
+        GPIO.output(aports[0], arr[0])
+        GPIO.output(aports[1], arr[1])
+        GPIO.output(aports[2], arr[2])
 
     @staticmethod
     def changBLight(arr):
-        # todo input B ports here
-        print "changBLight, arr is {0}".format(arr)
-        aports = (4, 5, 6)
-        # GPIO.output(aports[0], arr[0])
-        # GPIO.output(aports[1], arr[1])
-        # GPIO.output(aports[2], arr[2])
+        # input B ports here
+        aports = G.portsB 
+        print "changBLight {1}, arr is {0}".format(arr, aports)
+        GPIO.output(aports[0], arr[0])
+        GPIO.output(aports[1], arr[1])
+        GPIO.output(aports[2], arr[2])
 
     @staticmethod
     def __chargeValue(value):
@@ -143,6 +168,7 @@ class Traffic(object):
 
 
 if __name__ == '__main__':
+    G.config()
     # a is red
     a = Traffic(0, "Light A", 0)
     # b is green
