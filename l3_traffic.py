@@ -163,7 +163,12 @@ class Traffic(object):
             other.__changeToColor(1)
             # other.ctime = 2
             G.isRequest = True
-            #TODO other conditions
+        elif self.cclor == 2 and self.ctime > 3:
+            print "change current light ctime to 3, other light red to 3"
+            self.ctime = 3
+            #other.__changeToColor(1)
+            other.ctime = 3
+            G.isRequest = True
         else:
             print "{0}'s request is not responsed, check color and ctime".format(self.lname)
 
