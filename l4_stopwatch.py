@@ -3,6 +3,7 @@
 import time
 import datetime
 from time import sleep
+import RPi.GPIO as GPIO
 from Adafruit_7Segment import SevenSegment
 # ===========================================================================
 # Clock Example
@@ -10,21 +11,47 @@ from Adafruit_7Segment import SevenSegment
 segment = SevenSegment(address=0x70)
 counter = 0
 minute = 0
-while(True):
-    counter = counter + 1
-    if counter == 60:
-        counter = 0
-        minute = minute + 1
-    a4 = counter%10
-    a3 = counter/10
-    a2 = minute%10
-    a1 = minute/10
-    segment.writeDigit(4,a4)
-    segment.writeDigit(3,a3)
-    segment.writeDigit(2,a2)
-    segment.writeDigit(1,a1)
-    sleep(1)
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# input signal, startstop bottom and reset bottom
+GPIO.setup(24, GPIO.IN)
+GPIO.setup(23, GPIO.IN)
+flg = True
+while(True):
+    reset = GPIO.input(24)
+    startstop = GPIO.input(23)
+    if reset:
+        counter = 0
+        minute = 0
+
+    if startstop and flg:
+        flg = False
+    if startstop and not flg:
+        flg = True
+
+    if not flg:
+        sleep(1)
+        print "stopped"
+    else:
+        a4 = counter % 10
+        a3 = counter / 10
+        a2 = minute % 10
+        a1 = minute / 10
+        segment.writeDigit(4, a4)
+        segment.writeDigit(3, a3)
+        # segment.writeDigit(1,a2)
+        # segment.writeDigit(0,a1)
+        segment.setColon(counter % 2)
+        segment.writeDigit(1, a2)
+        segment.writeDigit(0, a1)
+        sleep(1)
+
+        counter = counter + 1
+        if counter == 60:
+            counter = 0
+            minute = minute + 1
     # now = datetime.datetime.now()
     # hour = now.hour
     # minute = now.minute
